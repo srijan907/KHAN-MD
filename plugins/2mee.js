@@ -2,8 +2,8 @@ const config = require('../config');
 const { cmd } = require('../command');
 
 cmd({
-  pattern: 'mee',
-  alias: ['Mee'],
+  pattern: '2mee',
+  alias: ['2Mee'],
   desc: 'Mention user and send voice note',
   category: 'fun',
   react: '🎙️'
