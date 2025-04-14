@@ -1,115 +1,94 @@
-const { cmd } = require('../command');
+const { cmd } = require("../command");
 
 let stopBomb = {};
 
+// TEXT BOMB
 cmd({
-    pattern: "bomb ?(.*)",
-    alias: [],
-    desc: "Bomb text messages with optional mention",
-    react: "💣",
-    category: "fun",
-    filename: __filename
-}, async (conn, mek, store, { reply, mentionedJid, sender, isGroup, args, q }) => {
-    const match = q;
-    const chatId = mek.chat;
+  pattern: "bomb ?(.*)",
+  desc: "Send repeated text messages",
+  category: "fun",
+  react: "💣",
+  filename: __filename,
+}, async (conn, m, store, { reply, q, mentionedJid, isGroup }) => {
+  const chatId = m.chat;
+  const args = q.trim().split(" ");
+  const count = parseInt(args[0]);
+  const text = args.slice(1).join(" ");
 
-    const parts = match.trim().split(" ");
-    const count = parseInt(parts[0]);
-    const text = parts.slice(1).join(" ");
+  if (!count || !text) return reply("⚠️ Example: .bomb 30 hello");
+  if (count > 150) return reply("❌ Limit 150 messages only.");
 
-    const mentionJid = mentionedJid?.[0] || mek.quoted?.sender;
+  stopBomb[chatId] = false;
 
-    if (!count || !text) {
-        return reply("⚠️ Usage: .bomb [count] [text]\nExample: .bomb 50 hi\nMention or reply to include tag.");
-    }
+  for (let i = 0; i < count; i++) {
+    if (stopBomb[chatId]) {
+      await reply("⛔ Bombing stopped!");
+      break;
+    }
 
-    if (count > 150) {
-        return reply("❌ Limit exceeded! Max 150 messages allowed.");
-    }
+    await conn.sendMessage(chatId, {
+      text: text,
+      mentions: mentionedJid,
+    });
 
-    stopBomb[chatId] = false;
+    await new Promise(res => setTimeout(res, 300));
+  }
 
-    for (let i = 0; i < count; i++) {
-        if (stopBomb[chatId]) {
-            await reply("⛔ Bombing Stopped!");
-            break;
-        }
-
-        await conn.sendMessage(chatId, {
-            text: mentionJid ? `${text}` : text,
-            mentions: mentionJid ? [mentionJid] : []
-        });
-
-        await new Promise(res => setTimeout(res, 200));
-    }
-
-    if (!stopBomb[chatId]) {
-        await reply("✅ Text Bombing complete!");
-    }
-
-    delete stopBomb[chatId];
+  delete stopBomb[chatId];
 });
 
 
+// MEDIA BOMB
 cmd({
-    pattern: "bombimage ?(.*)",
-    alias: ["bombmedia"],
-    desc: "Bomb media messages by replying to an image/video/document",
-    react: "📤",
-    category: "fun",
-    filename: __filename
-}, async (conn, mek, store, { reply, quoted, q }) => {
-    const count = parseInt(q.trim());
-    const chatId = mek.chat;
+  pattern: "bombimage ?(.*)",
+  alias: ["bombmedia"],
+  desc: "Send repeated media messages (image/video/document/sticker)",
+  category: "fun",
+  react: "📤",
+  filename: __filename,
+}, async (conn, m, store, { reply, quoted, q }) => {
+  const chatId = m.chat;
+  const count = parseInt(q.trim());
 
-    if (!quoted || !quoted.message) {
-        return reply("⚠️ Please reply to a media message (image, video, document).");
-    }
+  if (!quoted || !quoted.message) return reply("⚠️ Reply to a media message.");
+  if (!count) return reply("⚠️ Example: .bombimage 10");
+  if (count > 150) return reply("❌ Limit 150 allowed.");
 
-    if (!count || isNaN(count)) {
-        return reply("⚠️ Usage: .bombimage [count]\nExample: .bombimage 20");
-    }
+  const msgType = Object.keys(quoted.message)[0];
+  const mediaMsg = quoted.message[msgType];
 
-    if (count > 150) {
-        return reply("❌ Limit exceeded! Max 150 allowed.");
-    }
+  if (!["imageMessage", "videoMessage", "documentMessage", "stickerMessage"].includes(msgType)) {
+    return reply("❌ Only media (image/video/document/sticker) allowed.");
+  }
 
-    const msgType = Object.keys(quoted.message)[0];
-    const mediaMsg = quoted.message[msgType];
+  stopBomb[chatId] = false;
 
-    if (!["imageMessage", "videoMessage", "documentMessage", "stickerMessage"].includes(msgType)) {
-        return reply("❌ Only media (image/video/document/sticker) bombing is supported.");
-    }
+  for (let i = 0; i < count; i++) {
+    if (stopBomb[chatId]) {
+      await reply("⛔ Bombing stopped!");
+      break;
+    }
 
-    stopBomb[chatId] = false;
+    await conn.sendMessage(chatId, {
+      [msgType.replace("Message", "").toLowerCase()]: mediaMsg,
+    }, { quoted: m });
 
-    for (let i = 0; i < count; i++) {
-        if (stopBomb[chatId]) {
-            await reply("⛔ Bombing stopped!");
-            break;
-        }
+    await new Promise(res => setTimeout(res, 400));
+  }
 
-        await conn.sendMessage(chatId, { [msgType.replace("Message", "").toLowerCase()]: mediaMsg }, { quoted: mek });
-        await new Promise(res => setTimeout(res, 300));
-    }
-
-    if (!stopBomb[chatId]) {
-        await reply("✅ Media bombing complete!");
-    }
-
-    delete stopBomb[chatId];
+  delete stopBomb[chatId];
 });
 
 
+// STOP BOMB
 cmd({
-    pattern: "stopbomb",
-    alias: [],
-    desc: "Stop ongoing bombing",
-    react: "🛑",
-    category: "fun",
-    filename: __filename
-}, async (conn, mek, store, { reply }) => {
-    const chatId = mek.chat;
-    stopBomb[chatId] = true;
-    await reply("🛑 Bombing will be stopped shortly...");
+  pattern: "stopbomb",
+  desc: "Stop ongoing bombing",
+  category: "fun",
+  react: "🛑",
+  filename: __filename,
+}, async (conn, m, store, { reply }) => {
+  const chatId = m.chat;
+  stopBomb[chatId] = true;
+  reply("🛑 Bombing will stop shortly...");
 });
