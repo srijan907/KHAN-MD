@@ -35,7 +35,7 @@ cmd({
         // Send result
         await client.sendMessage(from, {
             image: imageBuffer,
-            caption: "> Powered By JawadTechX 🤍",
+            caption: "> Powered By 〆͎ＭＲ－Ｒａｂｂｉｔ 🤍",
             mimetype: 'image/png'
         }, { quoted: message });
 
@@ -117,7 +117,7 @@ cmd({
         }, { quoted: message });
     }
 
-    if (match.quoted.seconds > 60) {
+    if (match.quoted.seconds > 300) {
         return await client.sendMessage(from, {
             text: "⏱️ Media too long for voice (max 1 minute)"
         }, { quoted: message });
