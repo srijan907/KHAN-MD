@@ -1,27 +1,23 @@
-const { cmd } = require('../command'); // Command handler
-const fs = require('fs');
-const path = require('path');
+const axios = require("axios");
+const fetch = require("node-fetch");
+const { sleep } = require('../lib/functions');
+const { cmd, commands } = require("../command");
+const config = require("../config");
 cmd({
-    pattern: 'mee', // Command trigger
-    alias: ['me', 'myself'], // Other aliases
-    desc: 'Mention yourself', // Command description
-    category: 'utility', // Command category
-    react: '👤', // Emoji reaction
-    filename: __filename // Filename
-}, async (client, match, message, { from, sender }) => {
+    pattern: "mee",
+    desc: "Tag only the sender without any message.",
+    react: "❤️",
+    category: "fun",
+    filename: __filename
+}, async (conn, m, store, { from, isGroup, groupMetadata, reply, sender }) => {
     try {
-        // Only mention the user
-        const mentionMessage = `@${sender.split('@')[0]}`; // Just mention the user
-
-        // Send the response with the user mention
-        await client.sendMessage(from, {
-            text: mentionMessage,
-            mentions: [sender] // Mention the user
-        }, { quoted: message });
+        // Only mention User 1 (sender) in both group and inbox
+        await conn.sendMessage(from, {
+            text: `@${sender.split("@")[0]}`,  // Only mention the sender
+            mentions: [sender] // Only mention User 1 (sender)
+        });
     } catch (error) {
-        console.error("Error:", error);
-        await client.sendMessage(from, {
-            text: "❌ Something went wrong, please try again later."
-        }, { quoted: message });
+        console.error("❌ Error in mee command:", error);
+        reply("⚠️ An error occurred while processing the command. Please try again.");
     }
 });
