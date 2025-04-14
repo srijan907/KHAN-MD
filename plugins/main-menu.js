@@ -360,8 +360,8 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
                     forwardingScore: 999,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363354023106228@newsletter',
-                        newsletterName: 'JawadTechX',
+                        newsletterJid: '120363406899332269@newsletter',
+                        newsletterName: '〆͎ＭＲ－Ｒａｂｂｉｔ',
                         serverMessageId: 143
                     }
                 }
@@ -371,7 +371,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 
         // Send audio
         await conn.sendMessage(from, {
-            audio: { url: 'https://github.com/XdTechPro/KHAN-DATA/raw/refs/heads/main/autovoice/menunew.m4a' },
+            audio: { url: 'https://cdn.ironman.my.id/i/44ado5.mp4' },
             mimetype: 'audio/mp4',
             ptt: true
         }, { quoted: mek });
