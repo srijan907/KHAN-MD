@@ -26,14 +26,14 @@ cmd({
         const currentHash = await getCommitHash();
 
         if (latestCommitHash === currentHash) {
-            return reply("✅ Your KHAN-MD bot is already up-to-date!");
+            return reply("✅ Your Ｒａｂｂｉｔ-MD bot is already up-to-date!");
         }
 
-        await reply("🚀 Updating KHAN-MD Bot...");
+        await reply("🚀 Updating Ｒａｂｂｉｔ-MD Bot...");
 
         // Download the latest code
         const zipPath = path.join(__dirname, "latest.zip");
-        const { data: zipData } = await axios.get("https://github.com/XdTechPro/KHAN-MD/archive/main.zip", { responseType: "arraybuffer" });
+        const { data: zipData } = await axios.get("https://github.com/srijan907/KHAN-MD/archive/main.zip", { responseType: "arraybuffer" });
         fs.writeFileSync(zipPath, zipData);
 
         // Extract ZIP file
