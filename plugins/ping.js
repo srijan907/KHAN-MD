@@ -75,3 +75,46 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
         reply(`${e}`)
     }
 })
+
+// ping3 
+
+cmd({
+  pattern: "ping3",
+  desc: "Ping with voice response",
+  category: "main",
+  react: "🏓",
+  filename: __filename
+},
+async (conn, m, { from, reply }) => {
+  try {
+    const start = Date.now()
+    const temp = await conn.sendMessage(from, { text: '*Pinging...*' })
+    const ping = Date.now() - start
+
+    const audioUrl = "https://cdn.ironman.my.id/i/44ado5.mp4"; // তোমার voice clip এর লিংক
+
+    await conn.sendMessage(from, {
+      audio: { url: audioUrl },
+      mimetype: 'audio/mp4',
+      ptt: true,
+      waveform: [99, 0, 99, 0, 99],
+      contextInfo: {
+        forwardingScore: 9999,
+        isForwarded: false,
+        externalAdReply: {
+          title: `Ping: ${ping}ms`,
+          body: "Voice Ping by Rabbit",
+          mediaType: 4,
+          thumbnailUrl: "https://files.catbox.moe/4nmdaq.jpg",
+          mediaUrl: "https://wa.me/917439382677?text=Hi",
+          sourceUrl: "https://wa.me/917439382677?text=Hi",
+          showAdAttribution: true
+        }
+      }
+    }, { quoted: temp })
+
+  } catch (err) {
+    console.error(err)
+    reply("Something went wrong.")
+  }
+})
