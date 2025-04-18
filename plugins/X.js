@@ -13,7 +13,7 @@ async (conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, 
     try {
         // Liste des options NSFW
         const nsfwList = `
-   *❦ \`NEXUS-XMD ＳＥＸＹ ＨＵＢ.🎀🍭\`*
+   *❦ \`RABBIT-XMD ＳＥＸＹ ＨＵＢ.🎀🍭\`*
 
 1️⃣ *EJACULATION💦*
 2️⃣ *PENIS🍆*
@@ -33,7 +33,7 @@ async (conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, 
 *By Continueing You Agree that you are 18+ .*`;
 
         // URL image for NSFW
-        const imageUrl = 'https://i.ibb.co/CBnbVQ9/mrgmax.jpg';
+        const imageUrl = 'https://files.catbox.moe/4nmdaq.jpg';
 
         // Envoi de la liste avec l'image et la légende
         await conn.sendMessage(from, {
@@ -68,7 +68,7 @@ async (conn, mek, m, { from, l, quoted, body, isCmd, command, args, q, isGroup, 
             // Envoi de l'image avec le caption
             await conn.sendMessage(from, {
                 image: { url: imageUrl },
-                caption: `Here your ${command} image 🔞🍆🍑.\n> © Gᴇɴᴇʀᴀᴛᴇᴅ ʙʏ Vortex😋🍑🔞.`,
+                caption: `Here your ${command} image 🔞🍆🍑.\n> © Gᴇɴᴇʀᴀᴛᴇᴅ ʙʏ 〆͎ＭＲ－Ｒａｂｂｉｔ😋🍑🔞.`,
             }, { quoted: mek });
         } else {
             await reply('❌ No image found for this category.');
