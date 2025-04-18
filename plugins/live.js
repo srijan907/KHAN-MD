@@ -10,7 +10,7 @@ cmd({
 async (conn, mek, m, { from, reply }) => {
     try {
         await conn.sendMessage(from, {
-            image: { url: "https://files.catbox.moe/4nmdaq.jpg" }, // এখানে তোমার ইচ্ছামতো direct image link
+            image: { url: "https://files.catbox.moe/4nmdaq.jpg" }, //  link
             caption: `*Hello there RABBIT-XMD User!* 👋🏻
 
 > Simple, Clean & Packed With Features — Say hello to **RABBIT-XMD** WhatsApp Bot!
