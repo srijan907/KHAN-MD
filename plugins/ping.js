@@ -69,7 +69,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
         const message = await conn.sendMessage(from, { text: '*PINGING...*' })
         const endTime = Date.now()
         const ping = endTime - startTime
-        await conn.sendMessage(from, { text: `*🔥 Ｒａｂｂｉｔ- SPEED : ${ping}ms*` }, { quoted: message })
+        await conn.sendMessage(from, { text: `*𝕻𝖔𝖓𝖌 : ${ping}ms*` }, { quoted: message })
     } catch (e) {
         console.log(e)
         reply(`${e}`)
@@ -91,7 +91,7 @@ async (conn, m, { from, reply }) => {
     const temp = await conn.sendMessage(from, { text: '*Pinging...*' })
     const ping = Date.now() - start
 
-    const audioUrl = "https://cdn.ironman.my.id/i/44ado5.mp4"; // তোমার voice clip এর লিংক
+    const audioUrl = "https://cdn.ironman.my.id/i/44ado5.mp4"; // 
 
     await conn.sendMessage(from, {
       audio: { url: audioUrl },
